@@ -134,7 +134,6 @@
         <h1>World Charity Search</h1>
         <p class="mission">Search the universal open web natively to raise global donation funds.</p>
         
-        <!-- Multi-Tier Split Group Selection System -->
         <div class="selector-group">
             <select id="main-group" onchange="updateSubGroups()">
                 <option value="humanitarian">🌍 Humanitarian Aid & Human Rights</option>
@@ -145,7 +144,6 @@
             </select>
 
             <select id="sub-group">
-                <!-- Dropdowns dynamically populate based on selection mapping -->
                 <option value="poverty">Split: Poverty Alleviation & Clean Water</option>
                 <option value="refugees">Split: Crisis Relief & Refugees Support</option>
                 <option value="food-security">Split: Emergency Hunger & Food Banks</option>
@@ -158,7 +156,7 @@
         </div>
 
         <div style="margin-top: 25px;">
-            <a href="https://www.every.org" class="every-donate-button" data-theme="light">Directly Sponsor & Support 1M+ Nonprofits</a>
+            <a href="https://every.org" class="every-donate-button" data-theme="light">Directly Sponsor & Support 1M+ Nonprofits</a>
         </div>
     </div>
 
@@ -167,7 +165,6 @@
         <span id="ad-status">[Once approved by System1 or CodeFuel, paste your custom tracking script snippet right here]</span>
     </div>
 
-    <!-- Embedded Results Rendering Viewport -->
     <div class="results-container" id="results"></div>
 
     <footer>
@@ -175,7 +172,6 @@
     </footer>
 
     <script>
-        // Multi-tier sub-allocation array mapping parameters
         const groupMapping = {
             humanitarian: [
                 { value: "poverty", text: "Split: Poverty Alleviation & Clean Water" },
@@ -222,7 +218,6 @@
             });
         }
 
-        // Functional Web Embedding Parser Engine
         async function executeSecureGlobalSearch() {
             const query = document.getElementById('query').value;
             const targetPool = document.getElementById('sub-group').value;
@@ -234,7 +229,6 @@
 
             console.log(`Query metrics recorded: Routing 95% search profits into the split allocation pool [${targetPool}]`);
 
-            // Renders instant sandboxed search data matching any input query seamlessly onto the viewport
             try {
                 resultsDiv.innerHTML = `
                     <div class="result-item">
@@ -243,3 +237,13 @@
                     </div>
                     <div class="result-item">
                         <a href="https://google.com{encodeURIComponent(query)}" target="_blank">View Full Expanded Multi-Engine Feed for "${query}"</a>
+                        <div class="result-snippet">Click above to bridge out your query metrics directly across index syndication endpoints.</div>
+                    </div>`;
+            } catch (error) {
+                resultsDiv.innerHTML = "<p>Error executing web search index matching sequence.</p>";
+            }
+        }
+
+        document.getElementById('query').addEventListener('keypress', function (e) {
+
+         
