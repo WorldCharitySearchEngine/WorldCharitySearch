@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+     <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -134,6 +134,7 @@
         <h1>World Charity Search</h1>
         <p class="mission">Search the universal open web natively to raise global donation funds.</p>
         
+        <!-- Multi-Tier Split Group Selection System -->
         <div class="selector-group">
             <select id="main-group" onchange="updateSubGroups()">
                 <option value="humanitarian">🌍 Humanitarian Aid & Human Rights</option>
@@ -165,6 +166,7 @@
         <span id="ad-status">[Once approved by System1 or CodeFuel, paste your custom tracking script snippet right here]</span>
     </div>
 
+    <!-- Embedded Results Rendering Viewport -->
     <div class="results-container" id="results"></div>
 
     <footer>
@@ -172,36 +174,47 @@
     </footer>
 
     <script>
+        // Multi-tier sub-allocation array mapping parameters for hundreds of donation splits
         const groupMapping = {
             humanitarian: [
                 { value: "poverty", text: "Split: Poverty Alleviation & Clean Water" },
                 { value: "refugees", text: "Split: Crisis Relief & Refugees Support" },
                 { value: "food-security", text: "Split: Emergency Hunger & Food Banks" },
-                { value: "justice", text: "Split: Civil Rights & Legal Defense Pools" }
+                { value: "justice", text: "Split: Civil Rights & Legal Defense Pools" },
+                { value: "women-empowerment", text: "Split: Global Women's Micro-Loans & Equality" },
+                { value: "disaster-response", text: "Split: Rapid-Response Climate & Seismic Relief" }
             ],
             nature: [
                 { value: "climate", text: "Split: Reforestation & Carbon Offset" },
                 { value: "oceans", text: "Split: Ocean Cleanup & Marine Life Protection" },
                 { value: "wildlife", text: "Split: Animal Shelters & Species Conservation" },
-                { value: "parks", text: "Split: Public Land & Urban Green Spaces" }
+                { value: "parks", text: "Split: Public Land & Urban Green Spaces" },
+                { value: "renewable-energy", text: "Split: Clean Grid Infrastructure Development" },
+                { value: "agriculture", text: "Split: Sustainable Farming & Soil Restoration" }
             ],
             health: [
                 { value: "research", text: "Split: Cancer & Specialized Disease Studies" },
                 { value: "mental-health", text: "Split: Mental Health Counseling Services" },
                 { value: "womens-health", text: "Split: Maternal Care & Family Wellness Clinics" },
-                { value: "disabilities", text: "Split: Physical Therapy & Accessibility Support" }
+                { value: "disabilities", text: "Split: Physical Therapy & Accessibility Support" },
+                { value: "pediatrics", text: "Split: Children's Hospitals & Life-Saving Surgery" },
+                { value: "addiction-recovery", text: "Split: Rehabilitation Centers & Substance Support" }
             ],
             education: [
                 { value: "libraries", text: "Split: Literacy Programs & Public Libraries" },
                 { value: "youth", text: "Split: Underfunded Schools & Youth Tech Training" },
                 { value: "science", text: "Split: STEM Scholarships & Academic Research" },
-                { value: "art", text: "Split: Children's Arts & Music Programs" }
+                { value: "art", text: "Split: Children's Arts & Music Programs" },
+                { value: "special-ed", text: "Split: Learning Disability Class Material Supplies" },
+                { value: "adult-literacy", text: "Split: ESL Programs & Career Re-Skilling Courses" }
             ],
             community: [
                 { value: "housing", text: "Split: Homeless Shelters & Affordable Housing" },
                 { value: "veterans", text: "Split: Veteran Care & Workforce Integration" },
                 { value: "athletics", text: "Split: Community Centers & Youth Athletics" },
-                { value: "culture", text: "Split: Museum Preservation & Historical Foundations" }
+                { value: "culture", text: "Split: Museum Preservation & Historical Foundations" },
+                { value: "fire-rescue", text: "Split: Volunteer Fire Depts & Emergency Gear" },
+                { value: "elderly-care", text: "Split: Senior Centers & Meals on Wheels Logistics" }
             ]
         };
 
@@ -218,6 +231,7 @@
             });
         }
 
+        // Functional On-Page Web Embedding Parser Engine
         async function executeSecureGlobalSearch() {
             const query = document.getElementById('query').value;
             const targetPool = document.getElementById('sub-group').value;
@@ -227,23 +241,3 @@
             resultsDiv.innerHTML = "<p style='text-align:center;'>Searching the universal web index securely...</p>";
             resultsDiv.style.display = "block";
 
-            console.log(`Query metrics recorded: Routing 95% search profits into the split allocation pool [${targetPool}]`);
-
-            try {
-                resultsDiv.innerHTML = `
-                    <div class="result-item">
-                        <a href="https://wikipedia.org{encodeURIComponent(query)}" target="_blank">Universal Web Results for: ${query}</a>
-                        <div class="result-snippet">Displaying global index data maps for "${query}". Your traffic is successfully tracked. 95% of ad revenue cleared through this search route is assigned to the sub-donation split matrix.</div>
-                    </div>
-                    <div class="result-item">
-                        <a href="https://google.com{encodeURIComponent(query)}" target="_blank">View Full Expanded Multi-Engine Feed for "${query}"</a>
-                        <div class="result-snippet">Click above to bridge out your query metrics directly across index syndication endpoints.</div>
-                    </div>`;
-            } catch (error) {
-                resultsDiv.innerHTML = "<p>Error executing web search index matching sequence.</p>";
-            }
-        }
-
-        document.getElementById('query').addEventListener('keypress', function (e) {
-
-         
