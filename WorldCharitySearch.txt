@@ -37,6 +37,7 @@
             border-radius: 24px;
             overflow: hidden;
             border: 1px solid #e0e0e0;
+            background: white;
         }
         input[type="text"] {
             flex: 1;
@@ -79,7 +80,6 @@
             line-height: 1.4;
         }
     </style>
-    <!-- Loads the direct peer-to-peer crowdfunding donation widget button -->
     <script src="https://every.org" async></script>
 </head>
 <body>
@@ -88,7 +88,6 @@
         <h1>World Charity Search</h1>
         <p class="mission">Search the entire web natively to raise global donation funds.</p>
         
-        <!-- Interactive Cause Selection Dropdown Menu -->
         <div style="margin-bottom: 15px;">
             <label for="charity-cause" style="font-size: 0.95rem; color: #555;">Select Target Cause: </label>
             <select id="charity-cause" style="padding: 8px 15px; border-radius: 12px; border: 1px solid #ccc; outline: none; font-size: 0.95rem; background: white;">
@@ -100,47 +99,37 @@
             </select>
         </div>
 
-        <!-- The Live Main Search Input Bar -->
         <div class="search-box">
             <input type="text" id="query" placeholder="Type any everyday topic to search...">
             <button onclick="executeFreeWebSearch()">Search</button>
         </div>
 
-        <!-- 🌟 The Direct Sponsorship Button Widget -->
         <div style="margin-top: 25px;">
             <a href="https://every.org" class="every-donate-button" data-theme="light">Directly Sponsor & Support 1M+ Nonprofits</a>
         </div>
     </div>
 
-    <!-- Monetization Script Placement Zone -->
     <div class="ad-space">
         <strong>Sponsored Links Support Your Chosen Charity Cause</strong><br>
         <span id="ad-status">[Once approved by System1 or CodeFuel, paste your custom tracking script snippet right here]</span>
     </div>
 
-    <!-- Legal and Financial Transparency Disclaimer Footer -->
     <footer>
-        World Charity Search is an independent social enterprise initiative. 95% of our net profits (ad revenue generated from user clicks minus basic server and domain hosting fees) are distributed monthly directly to verified job-creation and global humanitarian nonprofits.
+        World Charity Search is an independent social enterprise initiative. 95% of our net profits are distributed monthly directly to verified job-creation and global humanitarian nonprofits.
     </footer>
 
     <script>
-        // Completely Free Open-Web Routing Loop
         function executeFreeWebSearch() {
             const query = document.getElementById('query').value;
             const chosenCause = document.getElementById('charity-cause').value;
             if (!query) return;
 
-            // Automatically logs analytical cause tracking data behind the scenes
-            console.log(`User query "${query}" processed. Routing 95% net profit metrics to: [${chosenCause}]`);
+            console.log(`User query "${query}" processed. Routing metrics to: [${chosenCause}]`);
 
-            // Securely drops user query parameters into the global search index matrix
             const targetedSearchUrl = `https://duckduckgo.com{encodeURIComponent(query)}`;
-            
-            // Redirects the viewport window to deliver immediate open web results
             window.location.href = targetedSearchUrl;
         }
 
-        // Trigger search functionality by pressing Enter key on the keyboard
         document.getElementById('query').addEventListener('keypress', function (e) {
             if (e.key === 'Enter') { executeFreeWebSearch(); }
         });
