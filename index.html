@@ -15,7 +15,7 @@
             min-height: 100vh;
         }
         .search-container {
-            margin-top: 10vh;
+            margin-top: 8vh;
             text-align: center;
             width: 100%;
             max-width: 650px;
@@ -34,7 +34,6 @@
             max-width: 550px;
             line-height: 1.4;
         }
-        /* 📊 Live Tracker Dashboard Styles */
         .stats-dashboard {
             display: flex;
             justify-content: space-around;
@@ -72,6 +71,7 @@
             border: 1px solid #e0e0e0;
             background: white;
             width: 100%;
+            margin-bottom: 25px;
         }
         input[type="text"] {
             flex: 1;
@@ -80,7 +80,7 @@
             border: none;
             outline: none;
         }
-        input[type="submit"] {
+        button.search-btn {
             padding: 0 25px;
             background-color: #0078d4;
             color: white;
@@ -89,7 +89,7 @@
             cursor: pointer;
             transition: background 0.2s;
         }
-        input[type="submit"]:hover {
+        button.search-btn:hover {
             background-color: #005a9e;
         }
         .selector-group {
@@ -107,6 +107,43 @@
             font-size: 0.95rem;
             background: white;
             cursor: pointer;
+        }
+        .results-container {
+            width: 100%;
+            max-width: 650px;
+            margin-top: 10px;
+            display: none;
+        }
+        .result-card {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 18px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+            text-align: left;
+        }
+        .result-card a {
+            color: #0078d4;
+            text-decoration: none;
+            font-size: 1.25rem;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 6px;
+        }
+        .result-card a:hover {
+            text-decoration: underline;
+        }
+        .result-url {
+            color: #107c41;
+            font-size: 0.85rem;
+            margin-bottom: 8px;
+            word-break: break-all;
+        }
+        .result-snippet {
+            color: #333;
+            font-size: 0.95rem;
+            line-height: 1.5;
         }
         .ad-space {
             margin-top: 45px;
@@ -138,7 +175,7 @@
         <h1>World Charity Search</h1>
         <p class="mission">Our mission is to donate 90% of all net profit generated from your everyday internet searches to global causes and workforce training.</p>
         
-        <!-- 📊 Embedded Tracker Dashboard Section -->
+        <!-- Embedded Tracker Dashboard Section -->
         <div class="stats-dashboard">
             <div class="stat-card">
                 <div class="stat-number" id="global-searches">1,482</div>
@@ -167,14 +204,17 @@
             </select>
         </div>
 
-        <!-- Native HTML Form built explicitly for seamless Google Search Navigation -->
-        <form action="https://google.com" method="GET" class="search-box" onsubmit="handleSearchSubmit()">
-            <input type="text" name="q" placeholder="Search the web with Google..." required>
-            <input type="submit" value="Search">
-        </form>
+        <!-- Clean Interactive Search Input Box Layout -->
+        <div class="search-box">
+            <input type="text" id="user-query" placeholder="Search the web for anything..." required>
+            <button class="search-btn" onclick="executeOnPageSearch()">Search</button>
+        </div>
+
+        <!-- On-Page Results Grid Viewport Container -->
+        <div class="results-container" id="search-results"></div>
 
         <!-- Every.org Direct Donation Platform Link Button -->
-        <div style="margin-top: 30px;">
+        <div style="margin-top: 15px;">
             <a href="https://every.org" class="every-donate-button" data-theme="light">Directly Sponsor & Support 1M+ Nonprofits</a>
         </div>
     </div>
@@ -189,63 +229,52 @@
     </footer>
 
     <script>
-        // Baseline monetization assumptions ($0.02 earned per search request based on industry averages)
         const revenuePerSearch = 0.02;
+        const baseSearches = 1482;
 
-        // Initialize and calculate dynamic stats values seamlessly
+        // Clean Mathematical Evaluator Initializer Loop
         function initTracker() {
-            let totalSearches = parseInt(localStorage.getItem('user_search_count')) || 1482;
+            let storedCount = localStorage.getItem('user_search_count');
+            let currentCount = storedCount ? parseInt(storedCount, 10) : baseSearches;
             
-            // Render the starting figures onto the dashboard layout container
-            document.getElementById('global-searches').textContent = totalSearches.toLocaleString();
-            document.getElementById('global-donated').textContent = '$' + (totalSearches * revenuePerSearch).toFixed(2);
+            // Safeguard against NaN corrupted database streams
+            if (isNaN(currentCount)) currentCount = baseSearches;
+
+            document.getElementById('global-searches').textContent = currentCount.toLocaleString();
+            document.getElementById('global-donated').textContent = '$' + (currentCount * revenuePerSearch).toFixed(2);
         }
 
-        // Ticks up metrics parameters immediately right as search executes
-        function handleSearchSubmit() {
+        async function executeOnPageSearch() {
+            const query = document.getElementById('user-query').value.trim();
+            const resultsDiv = document.getElementById('search-results');
+            if (!query) return;
+
+            // Strict Numerical Variable Tick Computation Sequence
+            let storedCount = localStorage.getItem('user_search_count');
+            let currentCount = storedCount ? parseInt(storedCount, 10) : baseSearches;
+            if (isNaN(currentCount)) currentCount = baseSearches;
+            
+            currentCount += 1;
+            localStorage.setItem('user_search_count', currentCount);
+            
+            initTracker();
             trackCauseSelection();
-            
-            let totalSearches = parseInt(localStorage.getItem('user_search_count')) || 1482;
-            totalSearches += 1;
-            
-            // Lock updated value into browser's local tracking cache
-            localStorage.setItem('user_search_count', totalSearches);
-        }
 
-        const groupMapping = {
-            humanitarian: [
-                { value: "poverty", text: "Split: Poverty Alleviation & Clean Water" },
-                { value: "refugees", text: "Split: Crisis Relief & Refugees Support" },
-                { value: "food-security", text: "Split: Emergency Hunger & Food Banks" },
-                { value: "justice", text: "Split: Civil Rights & Legal Defense Pools" },
-                { value: "women-empowerment", text: "Split: Global Women's Micro-Loans & Equality" }
-            ],
-            nature: [
-                { value: "climate", text: "Split: Reforestation & Carbon Offset" },
-                { value: "oceans", text: "Split: Ocean Cleanup & Marine Life Protection" },
-                { value: "wildlife", text: "Split: Animal Shelters & Species Conservation" },
-                { value: "parks", text: "Split: Public Land & Urban Green Spaces" }
-            ],
-            health: [
-                { value: "research", text: "Split: Cancer & Specialized Disease Studies" },
-                { value: "mental-health", text: "Split: Mental Health Counseling Services" },
-                { value: "womens-health", text: "Split: Maternal Care & Family Wellness Clinics" },
-                { value: "disabilities", text: "Split: Physical Therapy & Accessibility Support" }
-            ],
-            education: [
-                { value: "libraries", text: "Split: Literacy Programs & Public Libraries" },
-                { value: "youth", text: "Split: Underfunded Schools & Youth Tech Training" },
-                { value: "science", text: "Split: STEM Scholarships & Academic Research" },
-                { value: "art", text: "Split: Children's Arts & Music Programs" }
-            ],
-            community: [
-                { value: "housing", text: "Split: Homeless Shelters & Affordable Housing" },
-                { value: "veterans", text: "Split: Veteran Care & Workforce Integration" },
-                { value: "athletics", text: "Split: Community Centers & Youth Athletics" },
-                { value: "culture", text: "Split: Museum Preservation & Historical Foundations" }
-            ]
-        };
+            resultsDiv.innerHTML = "<p style='color:#666; text-align:center;'>Searching the universal open web index...</p>";
+            resultsDiv.style.display = "block";
 
-        function updateSubGroups() {
-            const mainSelection = document.getElementById("main-group").value;
+            try {
+                // Pulls structural JSON information nodes with direct layout execution rules
+                const response = await fetch(`https://wikipedia.org{encodeURIComponent(query)}&limit=6&namespace=0&format=json&origin=*`);
+                const data = await response.json();
+                resultsDiv.innerHTML = "";
+
+                const titles = data[1];
+                const snippets = data[2];
+                const links = data[3];
+
+                if (!titles || titles.length === 0) {
+                    resultsDiv.innerHTML = "<div class='result-card'><p class='result-snippet'>No open web matches found for this topic. Try another keyword!</p></div>";
+                    return;
+                }
 
