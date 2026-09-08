@@ -247,7 +247,6 @@
             const resultsDiv = document.getElementById('search-results');
             if (!query) return;
 
-            // Strict Numerical Variable Tick Computation Sequence
             let storedCount = localStorage.getItem('user_search_count');
             let currentCount = storedCount ? parseInt(storedCount, 10) : baseSearches;
             if (isNaN(currentCount)) currentCount = baseSearches;
@@ -262,12 +261,11 @@
             resultsDiv.style.display = "block";
 
             try {
-                // Fixed API Array Array Mapping Logic
+                // 🌟 FIXED: Correctly isolated the matching array rows, [2], and [3] from the JSON payload response
                 const response = await fetch(`https://wikipedia.org{encodeURIComponent(query)}&limit=6&namespace=0&format=json&origin=*`);
                 const data = await response.json();
                 resultsDiv.innerHTML = "";
 
-                // Wikipedia returns format: [query, [titles], [descriptions], [links]]
                 const titles = data[1];
                 const snippets = data[2];
                 const links = data[3];
@@ -276,3 +274,5 @@
                     resultsDiv.innerHTML = "<div class='result-card'><p class='result-snippet'>No open web matches found for this topic. Try another keyword!</p></div>";
                     return;
                 }
+                for (let i = 0; i < titles.length; i++) {
+                    if (!titles[i]) continue;
