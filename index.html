@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>World Charity Search</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #fcfcfc;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .search-container {
+            margin-top: 8vh;
+            text-align: center;
+            width: 100%;
+            max-width: 650px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Forces center alignment for all nested items */
+        }
+        h1 {
+            color: #0078d4;
+            font-size: 3rem;
+            margin-bottom: 5px;
+            text-align: center;
+        }
+        /* 🌟 FIXED: Perfect Center-Aligned Mission Copy without workforce text */
+        p.mission {
+            color: #222;
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin: 0 auto 25px auto;
+            max-width: 550px;
+            line-height: 1.4;
+            text-align: center; /* Centers text internally */
+            display: block;
+        }
+        
+        .master-dashboard {
+            background: white;
+            border: 2px solid #0078d4;
+            border-radius: 16px;
+            padding: 20px;
+            margin: 0 auto 20px auto;
+            box-shadow: 0 4px 12px rgba(0, 120, 212, 0.08);
+            max-width: 400px;
+            width: 100%;
+        }
+        .master-number {
+            font-size: 2.2rem;
+            font-weight: bold;
+            color: #0078d4;
+            margin-bottom: 4px;
+        }
+        .master-label {
+            font-size: 0.9rem;
+            color: #444;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            font-weight: 700;
+        }
+
+        .sectors-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+            gap: 10px;
+            width: 100%;
+            margin-bottom: 25px;
+        }
+        .sector-card {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 10px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+            transition: transform 0.2s;
+        }
+        .sector-card:hover {
+            transform: translateY(-2px);
+        }
+        .sector-emoji {
+            font-size: 1.3rem;
+            margin-bottom: 2px;
+        }
+        .sector-amount {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #333;
+        }
+        .sector-title {
+            font-size: 0.75rem;
+            color: #666;
+            margin-top: 2px;
+            line-height: 1.2;
+        }
+
+        .search-box {
+            display: flex;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            border-radius: 24px;
+            overflow: hidden;
+            border: 1px solid #e0e0e0;
+            background: white;
+            width: 100%;
+            margin-bottom: 25px;
+        }
+        input[type="text"] {
+            flex: 1;
+            padding: 15px 20px;
+            font-size: 16px;
+            border: none;
+            outline: none;
+        }
+        button.search-btn {
+            padding: 0 25px;
+            background-color: #0078d4;
+            color: white;
+            border: none;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        button.search-btn:hover {
+            background-color: #005a9e;
+        }
+        .selector-group {
+            margin-bottom: 25px;
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            width: 100%;
+        }
+        select {
+            padding: 10px 15px;
+            border-radius: 12px;
+            border: 1px solid #ccc;
+            outline: none;
+            font-size: 0.95rem;
+            background: white;
+            cursor: pointer;
+        }
+        
+        /* 🌐 FIXED: Robust Live Viewport Results Block Container */
+        .results-container {
+            width: 100%;
+            max-width: 650px;
+            height: 500px;
+            margin-top: 10px;
+            margin-bottom: 25px;
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            display: none;
+            overflow: hidden;
+        }
+        .results-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .ad-space {
+            margin-top: 45px;
+            padding: 15px;
+            background-color: #f3f2f1;
+            border: 1px dashed #a19f9d;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            color: #605e5c;
+            width: 100%;
+            max-width: 650px;
+            text-align: center;
+        }
+        footer {
+            margin-top: auto;
+            padding: 20px;
+            font-size: 0.85rem;
+            color: #777;
+            text-align: center;
+            max-width: 650px;
+            line-height: 1.4;
+        }
+    </style>
+    <script src="https://every.org" async></script>
+</head>
+<body>
+
+    <div class="search-container">
+        <h1>World Charity Search</h1>
+        <!-- 🌟 MISSION COPY PERFECTLY CENTERED AND STRIPPED OF WORKFORCE TEXT -->
+        <p class="mission">Our mission is to donate 90% of net profits generated from your everyday internet searches to global causes.</p>
+        
+        <div class="master-dashboard">
+            <div class="master-number" id="master-total-raised">$0.00</div>
+            <div class="master-label">Total Funds Raised</div>
+        </div>
+
+        <div class="sectors-grid">
+            <div class="sector-card">
+                <div class="sector-emoji">🌍</div>
+                <div class="sector-amount" id="sector-humanitarian">$0.00</div>
+                <div class="sector-title">Humanitarian Aid</div>
+            </div>
+            <div class="sector-card">
+                <div class="sector-emoji">🌳</div>
+                <div class="sector-amount" id="sector-nature">$0.00</div>
+                <div class="sector-title">Environment & Nature</div>
+            </div>
+            <div class="sector-card">
+                <div class="sector-emoji">🔬</div>
+                <div class="sector-amount" id="sector-health">$0.00</div>
+                <div class="sector-title">Medical & Health</div>
+            </div>
+            <div class="sector-card">
+                <div class="sector-emoji">📚</div>
+                <div class="sector-amount" id="sector-education">$0.00</div>
+                <div class="sector-title">Education & Youth</div>
+            </div>
+            <div class="sector-card">
+                <div class="sector-emoji">🏘️</div>
+                <div class="sector-amount" id="sector-community">$0.00</div>
+                <div class="sector-title">Community Action</div>
+            </div>
+        </div>
+
+        <div class="selector-group">
+            <select id="main-group" onchange="updateSubGroups()">
+                <option value="humanitarian">🌍 Humanitarian Aid & Human Rights</option>
+                <option value="nature">🌳 Environment, Nature & Wildlife</option>
+                <option value="health">🔬 Medical Research & Patient Care</option>
+                <option value="education">📚 Education, Literacy & Youth</option>
+                <option value="community">🏘️ Community Action & Development</option>
+            </select>
+
+            <select id="sub-group" onchange="trackCauseSelection()">
+                <option value="poverty">Split: Poverty Alleviation & Clean Water</option>
+                <option value="refugees">Split: Crisis Relief & Refugees Support</option>
+                <option value="food-security">Split: Emergency Hunger & Food Banks</option>
+            </select>
+        </div>
+
+        <div class="search-box">
+            <input type="text" id="user-query" placeholder="Search the web for anything..." required>
+            <button class="search-btn" onclick="executeOnPageSearch()">Search</button>
+        </div>
+
+        <!-- 🌐 On-Page Results Iframe Viewport Container -->
+        <div class="results-container" id="results-wrapper">
+            <iframe id="search-frame" name="search-frame" src=""></iframe>
+        </div>
+
+        <div style="margin-top: 15px;">
+            <a href="https://every.org" class="every-donate-button" data-theme="light">Directly Sponsor & Support 1M+ Nonprofits</a>
+        </div>
+    </div>
+
+    <div class="ad-space">
+        <strong>Sponsored Links Support Your Chosen Allocation Route</strong><br>
+        <span id="ad-status">[Once approved by System1 or CodeFuel, your custom tracking scripts will activate here]</span>
+    </div>
+
+    <footer>
+        World Charity Search is an independent social enterprise initiative. 90% of net profits are distributed monthly directly across your chosen structural collective fund pools.
+    </footer>
+
+    <script>
+        const revenuePerSearch = 0.02;
+        const baseSearches = 0; 
+
+        function initTracker() {
+            let hAmount = parseFloat(localStorage.getItem('amt_humanitarian')) || 0;
+            let nAmount = parseFloat(localStorage.getItem('amt_nature')) || 0;
+            let mAmount = parseFloat(localStorage.getItem('amt_health')) || 0;
+            let eAmount = parseFloat(localStorage.getItem('amt_education')) || 0;
+            let cAmount = parseFloat(localStorage.getItem('amt_community')) || 0;
+
+            let masterTotal = hAmount + nAmount + mAmount + eAmount + cAmount;
+
+            document.getElementById('master-total-raised').textContent = '$' + masterTotal.toFixed(2);
