@@ -40,6 +40,8 @@ class BuildCharitiesTest(unittest.TestCase):
             row("000000001", "K31"),                          # food bank -> humanitarian
             row("000000002", "C32"),                          # environment -> nature
             row("000000003", "E20"),                          # hospital -> excluded
+            row("000000009", "E310"),                         # health plan -> excluded
+            row("000000010", "S500"),                         # donor-advised fund -> excluded
             row("000000004", "B20", FOUNDATION="04"),         # private foundation -> excluded
             row("000000005", "P20", SUBSECTION="04"),         # not a 501(c)(3) -> excluded
             row("000000006", "S20", TAX_PERIOD="201812"),     # stale filing -> excluded

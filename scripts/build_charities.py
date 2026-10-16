@@ -39,9 +39,21 @@ POOLS = {
 }
 GROUP_TO_POOL = {letter: pool for pool, letters in POOLS.items() for letter in letters}
 
-# Hospitals and universities have huge revenue and would crowd out everyone else,
-# and they rarely need small donations. Excluded by NTEE code prefix.
-EXCLUDED_NTEE_PREFIXES = ("E20", "E21", "E22", "E24", "B40", "B41", "B42", "B43", "B50")
+# Organizations whose revenue is mostly fees or government contracts rather than
+# charitable giving. Ranked by revenue they would crowd out everyone else, and they
+# rarely need small donations. Excluded by NTEE code prefix.
+EXCLUDED_NTEE_PREFIXES = (
+    "E20", "E21", "E22", "E24",                # hospitals
+    "E31",                                     # health insurance plans / HMOs
+    "E90", "E91", "E92",                       # nursing homes, home health agencies
+    "E11", "E12",                              # hospital and health-system foundations
+    "B40", "B41", "B42", "B43", "B50",         # colleges and universities
+    "B11", "B12",                              # university and school foundations
+    "B90",                                     # testing and educational services companies
+    "L22", "L40",                              # retirement communities, student housing
+    "S30", "S31", "S32", "S40", "S41", "S43",  # economic development, business leagues
+    "S50",                                     # donor-advised funds, nonprofit management
+)
 
 # 15 = publicly supported (170(b)(1)(A)(vi)), 16 = 509(a)(2). Excludes private
 # foundations, churches, schools, hospitals and supporting organizations.
