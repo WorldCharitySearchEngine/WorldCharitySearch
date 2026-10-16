@@ -44,5 +44,7 @@ jobs:
             echo "Charity list unchanged."
           else
             git commit -m "Update charity list from IRS data"
+            # The branch may have moved while the list was building.
+            git pull --rebase origin "${GITHUB_REF_NAME}"
             git push origin "HEAD:${GITHUB_REF_NAME}"
           fi
