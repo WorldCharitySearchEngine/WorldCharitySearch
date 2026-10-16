@@ -5,208 +5,401 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>World Charity Search</title>
     <meta name="description" content="Search the web with Google. 90% of our net profits are donated to nonprofits on Every.org, split evenly across five charity pools.">
+    <meta name="theme-color" content="#0b6bcb">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #fcfcfc;
-            margin: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
+        :root {
+            --bg: #f6f8fc;
+            --bg-glow-1: rgba(56, 132, 255, 0.18);
+            --bg-glow-2: rgba(16, 185, 129, 0.14);
+            --surface: #ffffff;
+            --surface-soft: rgba(255, 255, 255, 0.72);
+            --border: #e3e8f0;
+            --text: #16202e;
+            --text-muted: #5b6678;
+            --accent: #0b6bcb;
+            --accent-hover: #0857a8;
+            --accent-soft: #e8f1fc;
+            --shadow: 0 1px 2px rgba(16, 24, 40, 0.04), 0 8px 24px rgba(16, 24, 40, 0.06);
+            --shadow-lift: 0 2px 4px rgba(16, 24, 40, 0.05), 0 16px 32px rgba(16, 24, 40, 0.10);
+
+            --pool-humanitarian: #e8590c;
+            --pool-nature: #2f9e44;
+            --pool-health: #d6336c;
+            --pool-education: #7048e8;
+            --pool-community: #1c7ed6;
         }
-        .search-container {
-            margin-top: 8vh;
-            text-align: center;
-            width: 100%;
-            max-width: 650px;
-            padding: 20px;
-            box-sizing: border-box;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        h1 {
-            color: #0078d4;
-            font-size: 3rem;
-            margin-bottom: 5px;
-            text-align: center;
-        }
-        p.mission {
-            color: #222;
-            font-size: 1.1rem;
-            font-weight: 600;
-            margin: 0 auto 25px auto;
-            max-width: 550px;
-            line-height: 1.4;
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg: #0d1320;
+                --bg-glow-1: rgba(56, 132, 255, 0.16);
+                --bg-glow-2: rgba(16, 185, 129, 0.10);
+                --surface: #151d2c;
+                --surface-soft: rgba(21, 29, 44, 0.75);
+                --border: #263248;
+                --text: #e8edf5;
+                --text-muted: #9aa6ba;
+                --accent: #4d9cf0;
+                --accent-hover: #74b3f5;
+                --accent-soft: #1a2a42;
+                --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 24px rgba(0, 0, 0, 0.25);
+                --shadow-lift: 0 2px 4px rgba(0, 0, 0, 0.35), 0 16px 32px rgba(0, 0, 0, 0.35);
+
+                --pool-humanitarian: #ff922b;
+                --pool-nature: #51cf66;
+                --pool-health: #f06595;
+                --pool-education: #9775fa;
+                --pool-community: #4dabf7;
+            }
         }
 
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+            color: var(--text);
+            background:
+                radial-gradient(900px 500px at 15% -10%, var(--bg-glow-1), transparent 70%),
+                radial-gradient(800px 500px at 90% 0%, var(--bg-glow-2), transparent 70%),
+                var(--bg);
+            background-attachment: fixed;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        main {
+            width: 100%;
+            max-width: 680px;
+            padding: 12vh 20px 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .logo {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            margin: 0 0 12px;
+            font-size: clamp(2.1rem, 6vw, 3.1rem);
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            line-height: 1.1;
+        }
+        @media (max-width: 600px) {
+            .logo { flex-direction: column; gap: 10px; }
+        }
+        .logo-mark {
+            width: 1.1em;
+            height: 1.1em;
+            flex-shrink: 0;
+        }
+        .logo-text {
+            background: linear-gradient(120deg, var(--accent) 10%, #10b981 90%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .mission {
+            margin: 0 auto 32px;
+            max-width: 520px;
+            font-size: 1.06rem;
+            line-height: 1.55;
+            color: var(--text-muted);
+        }
+        .mission strong { color: var(--text); font-weight: 600; }
+
+        /* Search */
         .search-box {
             display: flex;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            border-radius: 24px;
-            overflow: hidden;
-            border: 1px solid #e0e0e0;
-            background: white;
+            align-items: center;
             width: 100%;
-            margin-bottom: 30px;
+            padding: 6px 6px 6px 20px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 999px;
+            box-shadow: var(--shadow);
+            transition: box-shadow 0.2s, border-color 0.2s;
+        }
+        .search-box:focus-within {
+            border-color: var(--accent);
+            box-shadow: var(--shadow-lift), 0 0 0 4px var(--accent-soft);
+        }
+        .search-icon {
+            width: 20px;
+            height: 20px;
+            flex-shrink: 0;
+            color: var(--text-muted);
         }
         input[type="search"] {
             flex: 1;
             min-width: 0;
-            padding: 15px 20px;
-            font-size: 16px;
+            padding: 12px 14px;
+            font: inherit;
+            font-size: 1.05rem;
+            color: var(--text);
+            background: transparent;
             border: none;
             outline: none;
         }
-        button.search-btn {
-            padding: 0 25px;
-            background-color: #0078d4;
-            color: white;
+        input[type="search"]::placeholder { color: var(--text-muted); opacity: 0.8; }
+        .search-btn {
+            padding: 12px 26px;
+            font: inherit;
+            font-weight: 600;
+            font-size: 1rem;
+            color: #fff;
+            background: var(--accent);
             border: none;
-            font-size: 16px;
+            border-radius: 999px;
             cursor: pointer;
-            transition: background 0.2s;
+            transition: background 0.2s, transform 0.1s;
         }
-        button.search-btn:hover {
-            background-color: #005a9e;
+        .search-btn:hover { background: var(--accent-hover); }
+        .search-btn:active { transform: scale(0.97); }
+        .search-hint {
+            margin: 12px 0 48px;
+            font-size: 0.85rem;
+            color: var(--text-muted);
         }
 
-        .master-dashboard {
-            background: white;
-            border: 2px solid #0078d4;
-            border-radius: 16px;
-            padding: 20px;
-            margin: 0 auto 20px auto;
-            box-shadow: 0 4px 12px rgba(0, 120, 212, 0.08);
-            max-width: 400px;
-            width: 100%;
-            box-sizing: border-box;
-        }
-        .master-number {
-            font-size: 2.2rem;
-            font-weight: bold;
-            color: #0078d4;
-            margin-bottom: 4px;
-        }
-        .master-label {
-            font-size: 0.9rem;
-            color: #444;
-            text-transform: uppercase;
-            letter-spacing: 0.8px;
+        /* Impact */
+        .section-label {
+            margin: 0 0 14px;
+            font-size: 0.78rem;
             font-weight: 700;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+        }
+        .total-card {
+            width: 100%;
+            padding: 26px 20px 22px;
+            margin-bottom: 14px;
+            background: var(--surface-soft);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+        }
+        .total-number {
+            font-size: clamp(2.2rem, 7vw, 3rem);
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            font-variant-numeric: tabular-nums;
+            color: var(--text);
+        }
+        .total-label {
+            margin-top: 2px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--text-muted);
         }
         .updated {
+            display: inline-block;
+            margin-top: 12px;
+            padding: 4px 12px;
             font-size: 0.8rem;
-            color: #777;
-            margin-top: 6px;
+            font-weight: 500;
+            color: var(--accent);
+            background: var(--accent-soft);
+            border-radius: 999px;
         }
 
-        .sectors-grid {
+        .pools {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+            grid-template-columns: repeat(5, 1fr);
             gap: 10px;
             width: 100%;
-            margin-bottom: 25px;
+            margin-bottom: 40px;
         }
-        .sector-card {
-            background: white;
-            border: 1px solid #e0e0e0;
+        @media (max-width: 600px) {
+            .pools { grid-template-columns: repeat(2, 1fr); }
+            .pools .pool:last-child { grid-column: span 2; }
+        }
+        .pool {
+            position: relative;
+            padding: 16px 10px 14px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .pool::before {
+            content: "";
+            position: absolute;
+            inset: 0 0 auto 0;
+            height: 4px;
+            background: var(--pool-color);
+        }
+        .pool:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-lift);
+        }
+        .pool-emoji {
+            display: inline-grid;
+            place-items: center;
+            width: 42px;
+            height: 42px;
+            margin-bottom: 8px;
+            font-size: 1.35rem;
             border-radius: 12px;
-            padding: 10px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+            background: color-mix(in srgb, var(--pool-color) 14%, transparent);
         }
-        .sector-emoji {
-            font-size: 1.3rem;
-            margin-bottom: 2px;
-        }
-        .sector-amount {
-            font-size: 1.1rem;
-            font-weight: bold;
-            color: #333;
-        }
-        .sector-title {
-            font-size: 0.75rem;
-            color: #666;
-            margin-top: 2px;
-            line-height: 1.2;
-        }
-
-        .how-it-works {
-            text-align: left;
-            background: white;
-            border: 1px solid #e0e0e0;
-            border-radius: 12px;
-            padding: 15px 20px;
-            width: 100%;
-            box-sizing: border-box;
-            font-size: 0.95rem;
-            color: #333;
-            line-height: 1.5;
-        }
-        .how-it-works h2 {
+        .pool-amount {
             font-size: 1.05rem;
-            margin: 0 0 8px 0;
-            color: #0078d4;
+            font-weight: 700;
+            font-variant-numeric: tabular-nums;
         }
-        .how-it-works ol {
-            margin: 0;
-            padding-left: 20px;
+        .pool-title {
+            margin-top: 3px;
+            font-size: 0.76rem;
+            line-height: 1.3;
+            color: var(--text-muted);
         }
 
-        .every-link {
-            display: inline-block;
-            margin-top: 20px;
-            color: #0078d4;
-            font-weight: 600;
+        /* How it works */
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            width: 100%;
+            margin: 0 0 36px;
+            padding: 0;
+            list-style: none;
+            counter-reset: step;
+            text-align: left;
         }
+        @media (max-width: 600px) {
+            .steps { grid-template-columns: 1fr; }
+        }
+        .steps li {
+            counter-increment: step;
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+            padding: 16px;
+            font-size: 0.92rem;
+            line-height: 1.5;
+            color: var(--text-muted);
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+        }
+        .steps li::before {
+            content: counter(step);
+            flex-shrink: 0;
+            display: grid;
+            place-items: center;
+            width: 28px;
+            height: 28px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--accent);
+            background: var(--accent-soft);
+            border-radius: 50%;
+        }
+        .steps strong { display: block; margin-bottom: 2px; color: var(--text); font-weight: 600; }
+
+        a { color: var(--accent); }
+        .every-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 22px;
+            font-weight: 600;
+            text-decoration: none;
+            color: var(--accent);
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 999px;
+            box-shadow: var(--shadow);
+            transition: border-color 0.2s, transform 0.2s;
+        }
+        .every-link:hover { border-color: var(--accent); transform: translateY(-1px); }
 
         footer {
             margin-top: auto;
-            padding: 20px;
-            font-size: 0.85rem;
-            color: #777;
+            width: 100%;
+            max-width: 680px;
+            padding: 24px 20px 32px;
+            font-size: 0.82rem;
+            line-height: 1.5;
             text-align: center;
-            max-width: 650px;
-            line-height: 1.4;
+            color: var(--text-muted);
+            border-top: 1px solid var(--border);
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            * { transition: none !important; }
         }
     </style>
 </head>
 <body>
 
-    <div class="search-container">
-        <h1>World Charity Search</h1>
-        <p class="mission">Our mission is to donate 90% of net profits generated from your everyday internet searches to nonprofits on Every.org.</p>
+    <main>
+        <h1 class="logo">
+            <svg class="logo-mark" viewBox="0 0 48 48" aria-hidden="true">
+                <defs>
+                    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+                        <stop offset="0" stop-color="#0b6bcb"/>
+                        <stop offset="1" stop-color="#10b981"/>
+                    </linearGradient>
+                </defs>
+                <circle cx="24" cy="24" r="21" fill="none" stroke="url(#g)" stroke-width="3.5"/>
+                <path d="M24 35s-10-6.2-10-13a5.6 5.6 0 0 1 10-3.4A5.6 5.6 0 0 1 34 22c0 6.8-10 13-10 13z" fill="url(#g)"/>
+            </svg>
+            <span class="logo-text">World Charity Search</span>
+        </h1>
+        <p class="mission">Search the web like you always do. We donate <strong>90% of our net profits</strong> to nonprofits on Every.org.</p>
 
         <!-- A plain GET form to Google: works with the Enter key, the button, and even with JavaScript disabled. -->
         <form class="search-box" action="https://www.google.com/search" method="get" role="search">
-            <input type="search" name="q" id="user-query" placeholder="Search the web with Google..." aria-label="Search the web" autocomplete="off" autofocus required>
+            <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+                <circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/>
+            </svg>
+            <input type="search" name="q" id="user-query" placeholder="Search the web…" aria-label="Search the web" autocomplete="off" autofocus required>
             <button class="search-btn" type="submit">Search</button>
         </form>
+        <p class="search-hint">Results open on Google</p>
 
-        <div class="master-dashboard">
-            <div class="master-number" id="master-total-raised">$0.00</div>
-            <div class="master-label">Total Donated</div>
+        <h2 class="section-label">Our impact</h2>
+        <div class="total-card">
+            <div class="total-number" id="master-total-raised">$0.00</div>
+            <div class="total-label">Total donated</div>
             <div class="updated" id="last-updated"></div>
         </div>
 
-        <div class="sectors-grid" id="sectors-grid"></div>
+        <div class="pools" id="pools"></div>
 
-        <div class="how-it-works">
-            <h2>How donations work</h2>
-            <ol>
-                <li>Every search you start here helps the site earn revenue.</li>
-                <li>Each month, 90% of net profits go to nonprofits through <a href="https://www.every.org" target="_blank" rel="noopener">Every.org</a>.</li>
-                <li>The donation is split evenly across our five charity pools.</li>
-                <li>Each pool's share is then split evenly between the charities in that pool.</li>
-            </ol>
-        </div>
+        <h2 class="section-label">How donations work</h2>
+        <ol class="steps">
+            <li><div><strong>You search</strong>Every search you start here helps the site earn revenue.</div></li>
+            <li><div><strong>We give 90%</strong>Each month, 90% of net profits go to nonprofits through <a href="https://www.every.org" target="_blank" rel="noopener">Every.org</a>.</div></li>
+            <li><div><strong>Split across pools</strong>The donation is split evenly across our five charity pools.</div></li>
+            <li><div><strong>Split across charities</strong>Each pool's share is split evenly between the charities in that pool.</div></li>
+        </ol>
 
-        <a class="every-link" href="https://www.every.org" target="_blank" rel="noopener">Donate directly to 1M+ nonprofits on Every.org</a>
-    </div>
+        <a class="every-link" href="https://www.every.org" target="_blank" rel="noopener">
+            Donate directly to 1M+ nonprofits on Every.org
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg>
+        </a>
+    </main>
 
     <footer>
-        World Charity Search is an independent social enterprise. Search results are provided by Google. 90% of net profits are donated monthly and split evenly across our charity pools.
+        World Charity Search is an independent social enterprise. Search results are provided by Google.<br>
+        90% of net profits are donated monthly and split evenly across our charity pools.
     </footer>
 
     <script>
@@ -226,7 +419,7 @@
 
         function render(data) {
             const pools = data.pools || DEFAULT_POOLS;
-            const grid = document.getElementById('sectors-grid');
+            const grid = document.getElementById('pools');
             grid.innerHTML = '';
             let total = 0;
 
@@ -235,18 +428,19 @@
                 total += donated;
 
                 const card = document.createElement('div');
-                card.className = 'sector-card';
+                card.className = 'pool';
+                card.style.setProperty('--pool-color', `var(--pool-${pool.id}, var(--accent))`);
 
                 const emoji = document.createElement('div');
-                emoji.className = 'sector-emoji';
+                emoji.className = 'pool-emoji';
                 emoji.textContent = pool.emoji;
 
                 const amount = document.createElement('div');
-                amount.className = 'sector-amount';
+                amount.className = 'pool-amount';
                 amount.textContent = formatUSD(donated);
 
                 const title = document.createElement('div');
-                title.className = 'sector-title';
+                title.className = 'pool-title';
                 title.textContent = pool.title;
 
                 card.append(emoji, amount, title);
