@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transparency · World Charity Search</title>
+    <meta name="description" content="How World Charity Search earns money, how much it donates, and where the donations go.">
+    <meta name="theme-color" content="#0b6bcb">
+    <link rel="icon" href="favicon.svg" type="image/svg+xml">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        table { width: 100%; border-collapse: collapse; font-size: 0.92rem; }
+        th, td { padding: 10px 8px; text-align: left; border-bottom: 1px solid var(--border); }
+        th { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-muted); }
+        td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+    </style>
+</head>
+<body>
+
+    <nav class="site-nav">
+        <a class="nav-brand" href="./"><img src="favicon.svg" alt=""><span>World Charity Search</span></a>
+        <div class="nav-links">
+            <a href="charities.html">Charities</a>
+            <a href="extension.html">Extension</a>
+            <a href="transparency.html" aria-current="page">Transparency</a>
+        </div>
+    </nav>
+
+    <main class="page">
+        <header class="page-header">
+            <h1>Transparency</h1>
+            <p>Where the money comes from, how much we give, and where it goes. We publish every monthly payout here.</p>
+        </header>
+
+        <div class="prose">
+            <h2>Monthly payouts</h2>
+            <div class="card" id="payouts">
+                <p style="margin:0">Our first payout will be published here after our first full month of revenue.</p>
+            </div>
+
+            <h2>How we earn money</h2>
+            <p>When you search, results come from our search partner and may include clearly labeled ads. When someone clicks an ad, the advertiser pays our partner, and our partner shares part of that with us. Searching never costs you anything.</p>
+
+            <h2>What “net profits” means</h2>
+            <p>Net profits are the revenue we receive from our search partner, minus the direct costs of running World Charity Search: hosting, domain, software, payment and transaction fees, legal and accounting, and taxes. 90% of what remains is donated every month. The other 10% stays with the business to keep it running and growing.</p>
+
+            <h2>How donations are split</h2>
+            <ol>
+                <li>The month's donation is split evenly across our five pools: Humanitarian Aid, Environment &amp; Nature, Medical &amp; Health, Education &amp; Youth, and Community Action.</li>
+                <li>Each pool's share is split evenly between the charities in that pool.</li>
+                <li>When an even split would make gifts too small to send, we donate to a rotating group of charities in the pool that month, so over the following months every charity gets its turn and the totals stay even.</li>
+            </ol>
+            <p>All donations are made through <a href="https://www.every.org" target="_blank" rel="noopener">Every.org</a>, a 501(c)(3) nonprofit that delivers donations to U.S. charities.</p>
+
+            <h2>How charities are chosen</h2>
+            <p id="criteria">Our <a href="charities.html">charity list</a> is built from the IRS's official list of tax-exempt organizations and refreshed monthly. It includes active, tax-deductible 501(c)(3) public charities that have filed recently, sorted into pools by their official category. Hospitals, universities, health plans, donor-advised funds and similar fee-funded organizations are excluded so donations reach charities that rely on giving.</p>
+        </div>
+    </main>
+
+    <footer>
+        <a href="charities.html">Charities</a> · <a href="privacy.html">Privacy</a> · <a href="terms.html">Terms</a>
+    </footer>
+
+    <script>
+        const formatUSD = n => (Number(n) || 0).toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+
+        fetch('donations.json', { cache: 'no-cache' })
+            .then(r => r.ok ? r.json() : Promise.reject())
+            .then(data => {
+                const payouts = data.payouts || [];
+                if (!payouts.length) return;
+                const table = document.createElement('table');
+                table.innerHTML = '<thead><tr><th>Month</th><th class="num">Net profit</th><th class="num">Donated</th><th class="num">Charities</th><th>Receipts</th></tr></thead>';
+                const body = document.createElement('tbody');
+                payouts.forEach(p => {
+                    const tr = document.createElement('tr');
+                    [p.month, formatUSD(p.netProfit), formatUSD(p.donated), (p.charities || 0).toLocaleString()].forEach((value, i) => {
+                        const td = document.createElement('td');
+                        td.textContent = value;
+                        if (i > 0) td.className = 'num';
+                        tr.appendChild(td);
+                    });
+                    const receipt = document.createElement('td');
+                    if (p.receiptsUrl) {
+                        const a = document.createElement('a');
+                        a.href = p.receiptsUrl;
+                        a.textContent = 'View';
+                        receipt.appendChild(a);
+                    }
+                    tr.appendChild(receipt);
+                    body.appendChild(tr);
+                });
+                table.appendChild(body);
+                const container = document.getElementById('payouts');
+                container.innerHTML = '';
+                container.appendChild(table);
+            })
+            .catch(() => {});
+    </script>
+</body>
+</html>

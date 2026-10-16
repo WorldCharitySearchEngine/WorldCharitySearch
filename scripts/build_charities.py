@@ -55,12 +55,19 @@ EXCLUDED_NTEE_PREFIXES = (
     "S50",                                     # donor-advised funds, nonprofit management
 )
 
+# Some health plans and physician practices are filed under general categories,
+# so they are also caught by name.
+EXCLUDED_NAME_PATTERN = re.compile(
+    r"\b(health ?plan|medical group|health ?care system|health system|physicians|faculty practice|medical service association)\b",
+    re.IGNORECASE,
+)
+
 # 15 = publicly supported (170(b)(1)(A)(vi)), 16 = 509(a)(2). Excludes private
 # foundations, churches, schools, hospitals and supporting organizations.
 PUBLIC_CHARITY_FOUNDATION_CODES = {"15", "16"}
 
 SMALL_WORDS = {"a", "an", "and", "at", "by", "for", "in", "of", "on", "or", "the", "to", "with"}
-UPPER_WORDS = {"usa", "us", "ymca", "ywca", "aids", "hiv", "nyc", "lgbt", "lgbtq", "ii", "iii", "iv", "uk", "un", "unicef"}
+UPPER_WORDS = {"usa", "us", "ymca", "ywca", "aids", "hiv", "nyc", "lgbt", "lgbtq", "seiu", "naacp", "aclu", "spca", "aspca", "cdc", "ii", "iii", "iv", "uk", "un", "unicef"}
 
 
 def pretty_name(raw):
@@ -127,7 +134,7 @@ def build(sources, per_pool=PER_POOL, min_revenue=MIN_REVENUE, now=None):
             continue
         pool = pool_for(row.get("NTEE_CD"))
         revenue = revenue_of(row)
-        if pool is None or revenue < min_revenue:
+        if pool is None or revenue < min_revenue or EXCLUDED_NAME_PATTERN.search(row.get("NAME", "")):
             continue
         seen.add(ein)
         candidates[pool].append({

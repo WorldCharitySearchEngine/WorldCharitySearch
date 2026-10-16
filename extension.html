@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Browser Extension · World Charity Search</title>
+    <meta name="description" content="Make World Charity Search your default search engine so every search supports charity.">
+    <meta name="theme-color" content="#0b6bcb">
+    <link rel="icon" href="favicon.svg" type="image/svg+xml">
+    <link rel="search" type="application/opensearchdescription+xml" title="World Charity Search" href="opensearch.xml">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <nav class="site-nav">
+        <a class="nav-brand" href="./"><img src="favicon.svg" alt=""><span>World Charity Search</span></a>
+        <div class="nav-links">
+            <a href="charities.html">Charities</a>
+            <a href="extension.html" aria-current="page">Extension</a>
+            <a href="transparency.html">Transparency</a>
+        </div>
+    </nav>
+
+    <main class="page">
+        <header class="page-header">
+            <h1 id="title">Make every search count</h1>
+            <p id="subtitle">Set World Charity Search as your browser's default search engine. You keep searching from the address bar exactly like you do today, and every search supports charity.</p>
+        </header>
+
+        <div class="prose">
+            <div class="card" id="installed-note" hidden>
+                <strong>🎉 You're all set.</strong> Searches from your address bar now go through World Charity Search. Type <code>wcs</code> and a space to use it from any browser that also keeps another default.
+            </div>
+
+            <h2>Get the extension</h2>
+            <p>The extension sets World Charity Search as your default search engine and adds a toolbar button with a search box and our live donation total. It collects no data.</p>
+            <div class="cta-row" style="justify-content:flex-start">
+                <span class="every-link" aria-disabled="true">Chrome Web Store — coming soon</span>
+                <span class="every-link" aria-disabled="true">Firefox Add-ons — coming soon</span>
+                <span class="every-link" aria-disabled="true">Microsoft Edge — coming soon</span>
+            </div>
+
+            <h2>Or set it up yourself in under a minute</h2>
+            <div class="card">
+                <strong>Chrome, Edge, Brave</strong>
+                <ol>
+                    <li>Open Settings → <em>Search engine</em> → <em>Manage search engines</em>.</li>
+                    <li>Next to <em>Site search</em>, click <em>Add</em>.</li>
+                    <li>Name: <code>World Charity Search</code>, Shortcut: <code>wcs</code>, URL:<br><code id="search-url">https://worldcharitysearchengine.github.io/WorldCharitySearch/search.html?q=%s</code></li>
+                    <li>Click the ⋮ menu next to it and choose <em>Make default</em>.</li>
+                </ol>
+            </div>
+            <div class="card">
+                <strong>Firefox</strong>
+                <ol>
+                    <li>While on this page, click the search icon at the left of the address bar and choose <em>Add “World Charity Search”</em>.</li>
+                    <li>Open Settings → <em>Search</em> and pick World Charity Search as your default.</li>
+                </ol>
+            </div>
+            <div class="card">
+                <strong>Safari</strong>
+                <p style="margin:6px 0 0">Safari only allows a fixed list of search engines. Bookmark our <a href="./">homepage</a> and set it as your homepage instead.</p>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <a href="transparency.html">Transparency</a> · <a href="privacy.html">Privacy</a> · <a href="terms.html">Terms</a>
+    </footer>
+
+    <script>
+        if (new URLSearchParams(location.search).has('installed')) {
+            document.getElementById('installed-note').hidden = false;
+            document.getElementById('title').textContent = 'Thank you for joining!';
+        }
+        // Show the right URL wherever the site is hosted.
+        document.getElementById('search-url').textContent = new URL('search.html', location.href).href.split('?')[0] + '?q=%s';
+    </script>
+</body>
+</html>

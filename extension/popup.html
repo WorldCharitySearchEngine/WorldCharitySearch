@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>World Charity Search</title>
+    <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+    <header>
+        <img src="icons/icon-48.png" alt="" width="28" height="28">
+        <span class="brand">World Charity Search</span>
+    </header>
+
+    <form id="search-form" class="search-box" role="search">
+        <input type="search" id="query" placeholder="Search the web…" aria-label="Search the web" autocomplete="off" autofocus required>
+        <button type="submit" aria-label="Search">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        </button>
+    </form>
+
+    <div class="status">
+        <span class="dot" aria-hidden="true"></span>
+        Searches from your address bar now support charity.
+    </div>
+
+    <div class="impact">
+        <div class="impact-number" id="total">$0.00</div>
+        <div class="impact-label">donated so far</div>
+        <div class="impact-sub" id="charity-count">across thousands of nonprofits</div>
+    </div>
+
+    <nav>
+        <a href="#" data-path="charities.html">Charities</a>
+        <a href="#" data-path="transparency.html">Transparency</a>
+        <a href="#" data-path="">Website</a>
+    </nav>
+
+    <script src="popup.js"></script>
+</body>
+</html>

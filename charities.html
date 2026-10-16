@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Charities · World Charity Search</title>
+    <meta name="description" content="Browse the thousands of U.S. nonprofits that share in World Charity Search donations.">
+    <meta name="theme-color" content="#0b6bcb">
+    <link rel="icon" href="favicon.svg" type="image/svg+xml">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <script src="config.js"></script>
+</head>
+<body>
+
+    <nav class="site-nav">
+        <a class="nav-brand" href="./"><img src="favicon.svg" alt=""><span>World Charity Search</span></a>
+        <div class="nav-links">
+            <a href="charities.html" aria-current="page">Charities</a>
+            <a href="extension.html">Extension</a>
+            <a href="transparency.html">Transparency</a>
+        </div>
+    </nav>
+
+    <main class="page">
+        <header class="page-header">
+            <h1>Our charities</h1>
+            <p id="intro">Every month, 90% of our net profits are split evenly across five pools, then evenly across the charities in each pool. Tap any charity to see it on Every.org.</p>
+        </header>
+
+        <div class="filters">
+            <label class="filter-search">
+                <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+                <input type="search" id="filter-text" placeholder="Search by name, city, state or EIN" aria-label="Search charities" autocomplete="off">
+            </label>
+            <div class="chips" id="chips" role="group" aria-label="Filter by pool"></div>
+        </div>
+
+        <p class="result-count" id="result-count" aria-live="polite"></p>
+        <ul class="charity-list" id="charity-list"></ul>
+        <div class="load-more" id="load-more" hidden><button class="every-link" type="button">Show more</button></div>
+    </main>
+
+    <footer>
+        Charity data from the IRS Exempt Organizations Business Master File, refreshed monthly.<br>
+        <a href="transparency.html">Transparency</a> · <a href="privacy.html">Privacy</a> · <a href="terms.html">Terms</a>
+    </footer>
+
+    <script>
+        const PAGE_SIZE = 60;
+        const poolsById = Object.fromEntries(WCS_CONFIG.pools.map(p => [p.id, p]));
+        const params = new URLSearchParams(location.search);
+        const state = { pool: poolsById[params.get('pool')] ? params.get('pool') : 'all', text: '', shown: PAGE_SIZE };
+        let charities = [];
+
+        const listEl = document.getElementById('charity-list');
+        const countEl = document.getElementById('result-count');
+        const moreEl = document.getElementById('load-more');
+        const textEl = document.getElementById('filter-text');
+
+        function renderChips() {
+            const chips = document.getElementById('chips');
+            chips.innerHTML = '';
+            [{ id: 'all', emoji: '', title: 'All pools' }, ...WCS_CONFIG.pools].forEach(pool => {
+                const chip = document.createElement('button');
+                chip.type = 'button';
+                chip.className = 'chip';
+                chip.textContent = (pool.emoji ? pool.emoji + ' ' : '') + pool.title;
+                chip.setAttribute('aria-pressed', String(state.pool === pool.id));
+                chip.addEventListener('click', () => {
+                    state.pool = pool.id;
+                    state.shown = PAGE_SIZE;
+                    const url = new URL(location.href);
+                    if (pool.id === 'all') url.searchParams.delete('pool'); else url.searchParams.set('pool', pool.id);
+                    history.replaceState(null, '', url);
+                    renderChips();
+                    renderList();
+                });
+                chips.appendChild(chip);
+            });
+        }
+
+        function matches(charity, words) {
+            if (state.pool !== 'all' && charity.pool !== state.pool) return false;
+            if (!words.length) return true;
+            const haystack = charity._search;
+            return words.every(w => haystack.includes(w));
+        }
+
+        function renderList() {
+            const words = state.text.toLowerCase().split(/\s+/).filter(Boolean);
+            const results = charities.filter(c => matches(c, words));
+
+            listEl.innerHTML = '';
+            const fragment = document.createDocumentFragment();
+            results.slice(0, state.shown).forEach(charity => {
+                const pool = poolsById[charity.pool];
+                const li = document.createElement('li');
+                const link = document.createElement('a');
+                link.className = 'charity';
+                link.href = WCS_CONFIG.buildCharityUrl(charity.ein);
+                link.target = '_blank';
+                link.rel = 'noopener';
+                link.style.setProperty('--pool-color', `var(--pool-${charity.pool})`);
+
+                const name = document.createElement('span');
+                name.className = 'charity-name';
+                name.textContent = charity.name;
+
+                const meta = document.createElement('span');
+                meta.className = 'charity-meta';
+                const place = [charity.city, charity.state].filter(Boolean).join(', ');
+                meta.textContent = [pool ? pool.emoji + ' ' + pool.title : '', place].filter(Boolean).join(' · ');
+
+                link.append(name, meta);
+                li.appendChild(link);
+                fragment.appendChild(li);
+            });
+            listEl.appendChild(fragment);
+
+            countEl.textContent = results.length
+                ? `Showing ${Math.min(state.shown, results.length).toLocaleString()} of ${results.length.toLocaleString()} charities`
+                : 'No charities match your search.';
+            moreEl.hidden = results.length <= state.shown;
+        }
+
+        moreEl.querySelector('button').addEventListener('click', () => {
+            state.shown += PAGE_SIZE;
+            renderList();
+        });
+
+        let debounce;
+        textEl.addEventListener('input', () => {
+            clearTimeout(debounce);
+            debounce = setTimeout(() => {
+                state.text = textEl.value;
+                state.shown = PAGE_SIZE;
+                renderList();
+            }, 120);
+        });
+
+        renderChips();
+        fetch('charities.json', { cache: 'no-cache' })
+            .then(r => r.ok ? r.json() : Promise.reject())
+            .then(data => {
+                charities = data.charities.map(c => ({
+                    ...c,
+                    _search: `${c.name} ${c.city} ${c.state} ${c.ein}`.toLowerCase()
+                }));
+                document.getElementById('intro').textContent =
+                    `${charities.length.toLocaleString()} nonprofits share our donations. Every month, 90% of our net profits are split evenly across five pools, then evenly across the charities in each pool. Tap any charity to see it on Every.org.`;
+                renderList();
+            })
+            .catch(() => {
+                countEl.textContent = '';
+                listEl.outerHTML = '<div class="empty-state">The charity list is being prepared and will appear here soon.</div>';
+            });
+    </script>
+</body>
+</html>

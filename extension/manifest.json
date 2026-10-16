@@ -1,0 +1,45 @@
+{
+  "manifest_version": 3,
+  "name": "World Charity Search",
+  "short_name": "Charity Search",
+  "version": "1.0.0",
+  "description": "Make every search count. World Charity Search donates 90% of its net profits to thousands of nonprofits on Every.org.",
+  "homepage_url": "https://worldcharitysearchengine.github.io/WorldCharitySearch/",
+  "icons": {
+    "16": "icons/icon-16.png",
+    "32": "icons/icon-32.png",
+    "48": "icons/icon-48.png",
+    "128": "icons/icon-128.png"
+  },
+  "action": {
+    "default_title": "World Charity Search",
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icons/icon-16.png",
+      "32": "icons/icon-32.png"
+    }
+  },
+  "background": {
+    "service_worker": "background.js",
+    "scripts": ["background.js"]
+  },
+  "chrome_settings_overrides": {
+    "search_provider": {
+      "name": "World Charity Search",
+      "keyword": "wcs",
+      "search_url": "https://worldcharitysearchengine.github.io/WorldCharitySearch/search.html?q={searchTerms}",
+      "favicon_url": "https://worldcharitysearchengine.github.io/WorldCharitySearch/extension/icons/icon-32.png",
+      "encoding": "UTF-8",
+      "is_default": true
+    }
+  },
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "search@worldcharitysearch.org",
+      "strict_min_version": "121.0",
+      "data_collection_permissions": {
+        "required": ["none"]
+      }
+    }
+  }
+}
