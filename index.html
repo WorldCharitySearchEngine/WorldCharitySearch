@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>World Charity Search</title>
+    <meta name="description" content="Search the web with Google. 90% of our net profits are donated to nonprofits on Every.org, split evenly across five charity pools.">
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -20,9 +21,10 @@
             width: 100%;
             max-width: 650px;
             padding: 20px;
+            box-sizing: border-box;
             display: flex;
             flex-direction: column;
-            align-items: center; /* Forces center alignment for all nested items */
+            align-items: center;
         }
         h1 {
             color: #0078d4;
@@ -30,7 +32,6 @@
             margin-bottom: 5px;
             text-align: center;
         }
-        /* 🌟 FIXED: Perfect Center-Aligned Mission Copy without workforce text */
         p.mission {
             color: #222;
             font-size: 1.1rem;
@@ -38,66 +39,6 @@
             margin: 0 auto 25px auto;
             max-width: 550px;
             line-height: 1.4;
-            text-align: center; /* Centers text internally */
-            display: block;
-        }
-        
-        .master-dashboard {
-            background: white;
-            border: 2px solid #0078d4;
-            border-radius: 16px;
-            padding: 20px;
-            margin: 0 auto 20px auto;
-            box-shadow: 0 4px 12px rgba(0, 120, 212, 0.08);
-            max-width: 400px;
-            width: 100%;
-        }
-        .master-number {
-            font-size: 2.2rem;
-            font-weight: bold;
-            color: #0078d4;
-            margin-bottom: 4px;
-        }
-        .master-label {
-            font-size: 0.9rem;
-            color: #444;
-            text-transform: uppercase;
-            letter-spacing: 0.8px;
-            font-weight: 700;
-        }
-
-        .sectors-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
-            gap: 10px;
-            width: 100%;
-            margin-bottom: 25px;
-        }
-        .sector-card {
-            background: white;
-            border: 1px solid #e0e0e0;
-            border-radius: 12px;
-            padding: 10px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.03);
-            transition: transform 0.2s;
-        }
-        .sector-card:hover {
-            transform: translateY(-2px);
-        }
-        .sector-emoji {
-            font-size: 1.3rem;
-            margin-bottom: 2px;
-        }
-        .sector-amount {
-            font-size: 1.1rem;
-            font-weight: bold;
-            color: #333;
-        }
-        .sector-title {
-            font-size: 0.75rem;
-            color: #666;
-            margin-top: 2px;
-            line-height: 1.2;
         }
 
         .search-box {
@@ -108,10 +49,11 @@
             border: 1px solid #e0e0e0;
             background: white;
             width: 100%;
-            margin-bottom: 25px;
+            margin-bottom: 30px;
         }
-        input[type="text"] {
+        input[type="search"] {
             flex: 1;
+            min-width: 0;
             padding: 15px 20px;
             font-size: 16px;
             border: none;
@@ -129,54 +71,96 @@
         button.search-btn:hover {
             background-color: #005a9e;
         }
-        .selector-group {
-            margin-bottom: 25px;
-            display: flex;
-            gap: 10px;
-            justify-content: center;
-            width: 100%;
-        }
-        select {
-            padding: 10px 15px;
-            border-radius: 12px;
-            border: 1px solid #ccc;
-            outline: none;
-            font-size: 0.95rem;
+
+        .master-dashboard {
             background: white;
-            cursor: pointer;
-        }
-        
-        /* 🌐 FIXED: Robust Live Viewport Results Block Container */
-        .results-container {
-            width: 100%;
-            max-width: 650px;
-            height: 500px;
-            margin-top: 10px;
-            margin-bottom: 25px;
-            border: 1px solid #e2e8f0;
+            border: 2px solid #0078d4;
             border-radius: 16px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-            display: none;
-            overflow: hidden;
-        }
-        .results-container iframe {
+            padding: 20px;
+            margin: 0 auto 20px auto;
+            box-shadow: 0 4px 12px rgba(0, 120, 212, 0.08);
+            max-width: 400px;
             width: 100%;
-            height: 100%;
-            border: none;
+            box-sizing: border-box;
+        }
+        .master-number {
+            font-size: 2.2rem;
+            font-weight: bold;
+            color: #0078d4;
+            margin-bottom: 4px;
+        }
+        .master-label {
+            font-size: 0.9rem;
+            color: #444;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            font-weight: 700;
+        }
+        .updated {
+            font-size: 0.8rem;
+            color: #777;
+            margin-top: 6px;
         }
 
-        .ad-space {
-            margin-top: 45px;
-            padding: 15px;
-            background-color: #f3f2f1;
-            border: 1px dashed #a19f9d;
-            border-radius: 8px;
-            font-size: 0.9rem;
-            color: #605e5c;
+        .sectors-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+            gap: 10px;
             width: 100%;
-            max-width: 650px;
-            text-align: center;
+            margin-bottom: 25px;
         }
+        .sector-card {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 10px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+        }
+        .sector-emoji {
+            font-size: 1.3rem;
+            margin-bottom: 2px;
+        }
+        .sector-amount {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #333;
+        }
+        .sector-title {
+            font-size: 0.75rem;
+            color: #666;
+            margin-top: 2px;
+            line-height: 1.2;
+        }
+
+        .how-it-works {
+            text-align: left;
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 15px 20px;
+            width: 100%;
+            box-sizing: border-box;
+            font-size: 0.95rem;
+            color: #333;
+            line-height: 1.5;
+        }
+        .how-it-works h2 {
+            font-size: 1.05rem;
+            margin: 0 0 8px 0;
+            color: #0078d4;
+        }
+        .how-it-works ol {
+            margin: 0;
+            padding-left: 20px;
+        }
+
+        .every-link {
+            display: inline-block;
+            margin-top: 20px;
+            color: #0078d4;
+            font-weight: 600;
+        }
+
         footer {
             margin-top: auto;
             padding: 20px;
@@ -187,99 +171,102 @@
             line-height: 1.4;
         }
     </style>
-    <script src="https://every.org" async></script>
 </head>
 <body>
 
     <div class="search-container">
         <h1>World Charity Search</h1>
-        <!-- 🌟 MISSION COPY PERFECTLY CENTERED AND STRIPPED OF WORKFORCE TEXT -->
-        <p class="mission">Our mission is to donate 90% of net profits generated from your everyday internet searches to global causes.</p>
-        
+        <p class="mission">Our mission is to donate 90% of net profits generated from your everyday internet searches to nonprofits on Every.org.</p>
+
+        <!-- A plain GET form to Google: works with the Enter key, the button, and even with JavaScript disabled. -->
+        <form class="search-box" action="https://www.google.com/search" method="get" role="search">
+            <input type="search" name="q" id="user-query" placeholder="Search the web with Google..." aria-label="Search the web" autocomplete="off" autofocus required>
+            <button class="search-btn" type="submit">Search</button>
+        </form>
+
         <div class="master-dashboard">
             <div class="master-number" id="master-total-raised">$0.00</div>
-            <div class="master-label">Total Funds Raised</div>
+            <div class="master-label">Total Donated</div>
+            <div class="updated" id="last-updated"></div>
         </div>
 
-        <div class="sectors-grid">
-            <div class="sector-card">
-                <div class="sector-emoji">🌍</div>
-                <div class="sector-amount" id="sector-humanitarian">$0.00</div>
-                <div class="sector-title">Humanitarian Aid</div>
-            </div>
-            <div class="sector-card">
-                <div class="sector-emoji">🌳</div>
-                <div class="sector-amount" id="sector-nature">$0.00</div>
-                <div class="sector-title">Environment & Nature</div>
-            </div>
-            <div class="sector-card">
-                <div class="sector-emoji">🔬</div>
-                <div class="sector-amount" id="sector-health">$0.00</div>
-                <div class="sector-title">Medical & Health</div>
-            </div>
-            <div class="sector-card">
-                <div class="sector-emoji">📚</div>
-                <div class="sector-amount" id="sector-education">$0.00</div>
-                <div class="sector-title">Education & Youth</div>
-            </div>
-            <div class="sector-card">
-                <div class="sector-emoji">🏘️</div>
-                <div class="sector-amount" id="sector-community">$0.00</div>
-                <div class="sector-title">Community Action</div>
-            </div>
+        <div class="sectors-grid" id="sectors-grid"></div>
+
+        <div class="how-it-works">
+            <h2>How donations work</h2>
+            <ol>
+                <li>Every search you start here helps the site earn revenue.</li>
+                <li>Each month, 90% of net profits go to nonprofits through <a href="https://www.every.org" target="_blank" rel="noopener">Every.org</a>.</li>
+                <li>The donation is split evenly across our five charity pools.</li>
+                <li>Each pool's share is then split evenly between the charities in that pool.</li>
+            </ol>
         </div>
 
-        <div class="selector-group">
-            <select id="main-group" onchange="updateSubGroups()">
-                <option value="humanitarian">🌍 Humanitarian Aid & Human Rights</option>
-                <option value="nature">🌳 Environment, Nature & Wildlife</option>
-                <option value="health">🔬 Medical Research & Patient Care</option>
-                <option value="education">📚 Education, Literacy & Youth</option>
-                <option value="community">🏘️ Community Action & Development</option>
-            </select>
-
-            <select id="sub-group" onchange="trackCauseSelection()">
-                <option value="poverty">Split: Poverty Alleviation & Clean Water</option>
-                <option value="refugees">Split: Crisis Relief & Refugees Support</option>
-                <option value="food-security">Split: Emergency Hunger & Food Banks</option>
-            </select>
-        </div>
-
-        <div class="search-box">
-            <input type="text" id="user-query" placeholder="Search the web for anything..." required>
-            <button class="search-btn" onclick="executeOnPageSearch()">Search</button>
-        </div>
-
-        <!-- 🌐 On-Page Results Iframe Viewport Container -->
-        <div class="results-container" id="results-wrapper">
-            <iframe id="search-frame" name="search-frame" src=""></iframe>
-        </div>
-
-        <div style="margin-top: 15px;">
-            <a href="https://every.org" class="every-donate-button" data-theme="light">Directly Sponsor & Support 1M+ Nonprofits</a>
-        </div>
-    </div>
-
-    <div class="ad-space">
-        <strong>Sponsored Links Support Your Chosen Allocation Route</strong><br>
-        <span id="ad-status">[Once approved by System1 or CodeFuel, your custom tracking scripts will activate here]</span>
+        <a class="every-link" href="https://www.every.org" target="_blank" rel="noopener">Donate directly to 1M+ nonprofits on Every.org</a>
     </div>
 
     <footer>
-        World Charity Search is an independent social enterprise initiative. 90% of net profits are distributed monthly directly across your chosen structural collective fund pools.
+        World Charity Search is an independent social enterprise. Search results are provided by Google. 90% of net profits are donated monthly and split evenly across our charity pools.
     </footer>
 
     <script>
-        const revenuePerSearch = 0.02;
-        const baseSearches = 0; 
+        // Donation totals live in donations.json so there is one public source of truth.
+        // Update that file after each monthly payout; these defaults are shown if it can't be loaded.
+        const DEFAULT_POOLS = [
+            { id: 'humanitarian', emoji: '🌍', title: 'Humanitarian Aid', donated: 0 },
+            { id: 'nature',       emoji: '🌳', title: 'Environment & Nature', donated: 0 },
+            { id: 'health',       emoji: '🔬', title: 'Medical & Health', donated: 0 },
+            { id: 'education',    emoji: '📚', title: 'Education & Youth', donated: 0 },
+            { id: 'community',    emoji: '🏘️', title: 'Community Action', donated: 0 }
+        ];
 
-        function initTracker() {
-            let hAmount = parseFloat(localStorage.getItem('amt_humanitarian')) || 0;
-            let nAmount = parseFloat(localStorage.getItem('amt_nature')) || 0;
-            let mAmount = parseFloat(localStorage.getItem('amt_health')) || 0;
-            let eAmount = parseFloat(localStorage.getItem('amt_education')) || 0;
-            let cAmount = parseFloat(localStorage.getItem('amt_community')) || 0;
+        function formatUSD(amount) {
+            return amount.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+        }
 
-            let masterTotal = hAmount + nAmount + mAmount + eAmount + cAmount;
+        function render(data) {
+            const pools = data.pools || DEFAULT_POOLS;
+            const grid = document.getElementById('sectors-grid');
+            grid.innerHTML = '';
+            let total = 0;
 
-            document.getElementById('master-total-raised').textContent = '$' + masterTotal.toFixed(2);
+            pools.forEach(pool => {
+                const donated = Number(pool.donated) || 0;
+                total += donated;
+
+                const card = document.createElement('div');
+                card.className = 'sector-card';
+
+                const emoji = document.createElement('div');
+                emoji.className = 'sector-emoji';
+                emoji.textContent = pool.emoji;
+
+                const amount = document.createElement('div');
+                amount.className = 'sector-amount';
+                amount.textContent = formatUSD(donated);
+
+                const title = document.createElement('div');
+                title.className = 'sector-title';
+                title.textContent = pool.title;
+
+                card.append(emoji, amount, title);
+                if (pool.charities && pool.charities.length) {
+                    card.title = 'Split evenly between: ' + pool.charities.join(', ');
+                }
+                grid.appendChild(card);
+            });
+
+            document.getElementById('master-total-raised').textContent = formatUSD(total);
+            document.getElementById('last-updated').textContent =
+                data.lastUpdated ? 'Last updated ' + data.lastUpdated : 'First donations coming soon';
+        }
+
+        render({ pools: DEFAULT_POOLS });
+
+        fetch('donations.json', { cache: 'no-cache' })
+            .then(response => response.ok ? response.json() : Promise.reject())
+            .then(render)
+            .catch(() => { /* keep the defaults */ });
+    </script>
+</body>
+</html>

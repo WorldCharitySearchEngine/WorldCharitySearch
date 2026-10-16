@@ -1,0 +1,10 @@
+{
+  "lastUpdated": null,
+  "pools": [
+    { "id": "humanitarian", "emoji": "🌍", "title": "Humanitarian Aid", "donated": 0, "charities": [] },
+    { "id": "nature", "emoji": "🌳", "title": "Environment & Nature", "donated": 0, "charities": [] },
+    { "id": "health", "emoji": "🔬", "title": "Medical & Health", "donated": 0, "charities": [] },
+    { "id": "education", "emoji": "📚", "title": "Education & Youth", "donated": 0, "charities": [] },
+    { "id": "community", "emoji": "🏘️", "title": "Community Action", "donated": 0, "charities": [] }
+  ]
+}
