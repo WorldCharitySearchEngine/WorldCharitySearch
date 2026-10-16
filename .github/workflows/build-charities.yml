@@ -1,0 +1,48 @@
+name: Build charity list
+
+# Rebuilds charities.json from the IRS's list of tax-exempt organizations.
+# Runs monthly (the IRS refreshes the file monthly), on demand from the Actions tab,
+# and whenever the builder changes.
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "17 6 2 * *"
+  push:
+    paths:
+      - "scripts/build_charities.py"
+      - ".github/workflows/build-charities.yml"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: build-charities-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Test scripts
+        run: python -m unittest discover scripts
+
+      - name: Build charities.json from IRS data
+        run: python scripts/build_charities.py --out charities.json
+
+      - name: Commit updated list
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add charities.json
+          if git diff --cached --quiet; then
+            echo "Charity list unchanged."
+          else
+            git commit -m "Update charity list from IRS data"
+            git push origin "HEAD:${GITHUB_REF_NAME}"
+          fi

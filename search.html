@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex">
+    <title>Searching… · World Charity Search</title>
+    <link rel="icon" href="favicon.svg" type="image/svg+xml">
+    <style>
+        body { margin: 0; min-height: 100vh; display: grid; place-items: center; font-family: system-ui, sans-serif; color: #5b6678; background: #f6f8fc; }
+        @media (prefers-color-scheme: dark) { body { color: #9aa6ba; background: #0d1320; } }
+    </style>
+    <script src="config.js"></script>
+</head>
+<body>
+    <p id="msg">Searching…</p>
+    <script>
+        // Single entry point for every search (homepage, browser extension, browser search bar).
+        // It forwards to the search partner configured in config.js.
+        const query = new URLSearchParams(location.search).get('q');
+        if (query && query.trim()) {
+            location.replace(WCS_CONFIG.buildSearchUrl(query.trim()));
+        } else {
+            location.replace('./');
+        }
+    </script>
+    <noscript><p>Please enable JavaScript, or <a href="./">go back to the homepage</a>.</p></noscript>
+</body>
+</html>

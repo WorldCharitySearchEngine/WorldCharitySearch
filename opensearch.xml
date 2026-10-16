@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Lets browsers offer "Add World Charity Search" as a search engine.
+     Update the URLs when the site moves to its own domain. -->
+<OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/">
+  <ShortName>World Charity Search</ShortName>
+  <Description>Search the web. 90% of net profits go to charity.</Description>
+  <InputEncoding>UTF-8</InputEncoding>
+  <Image width="32" height="32" type="image/png">https://worldcharitysearchengine.github.io/WorldCharitySearch/extension/icons/icon-32.png</Image>
+  <Url type="text/html" method="get" template="https://worldcharitysearchengine.github.io/WorldCharitySearch/search.html?q={searchTerms}"/>
+</OpenSearchDescription>
